@@ -11,7 +11,7 @@ on:
       - 'package-lock.json'
       - 'tsconfig.json'
 
-    paths-ignore: 
+    paths-ignore: # Não participam do test no Action 
       - 'README.md'
 
 env:
