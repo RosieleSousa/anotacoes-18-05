@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request: 
+    branches:
+      - develop
+    paths: 
+      - 'src/**'
+      - 'tests/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+
+    paths-ignore: # Não participam do test no Action 
+      - 'README.md'
+
+env:
+  PORT: ${{ vars.PORT }}
+  API_TOKEN: ${{ secrets.API_TOKEN }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout no código
+        uses: actions/checkout@v4
+
+      - name: Instalar o Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instala dependências
+        run: npm install
+
+      - name: Roda os testes
+        run: npm test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout no código
+        uses: actions/checkout@v4
+
+      - name: Instalar o Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instala dependências
+        run: npm install
+
+      - name: Roda os build
+        run: npm run build
+
